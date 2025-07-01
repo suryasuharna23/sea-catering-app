@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useFirebase } from '../context/FirebaseContext';
 import { collection, query, where, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; // Import Link component
 import ModalMessage from './ModalMessage';
 
 const UserDashboard = () => {
