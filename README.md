@@ -1,7 +1,4 @@
 # SEA Catering: Makanan Sehat, Kapan Saja, Di Mana Saja
-
-![SEA Catering Logo/Banner (Opsional, tambahkan gambar di sini)](https://via.placeholder.com/1200x400?text=SEA+Catering+App)
-
 ## Gambaran Umum Proyek
 
 SEA Catering adalah aplikasi web modern yang dibangun dengan Next.js dan Firebase, dirancang untuk memberikan pengalaman yang mulus bagi pengguna untuk berlangganan paket makanan sehat dan mengirimkannya langsung ke pintu mereka. Misi kami adalah membuat makan sehat dapat diakses dan nyaman bagi semua orang, menawarkan pilihan makanan yang dapat disesuaikan dan informasi nutrisi yang terperinci.
