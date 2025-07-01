@@ -16,6 +16,7 @@ const RegisterForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
   const router = useRouter();
 
   const validatePassword = (pwd) => {
@@ -43,6 +44,12 @@ const RegisterForm = () => {
     return '';
   };
 
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setPasswordError(validatePassword(newPassword));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,9 +63,9 @@ const RegisterForm = () => {
       return;
     }
 
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      setMessage(passwordError);
+    const validationError = validatePassword(password);
+    if (validationError) {
+      setMessage(validationError);
       return;
     }
 
@@ -73,7 +80,7 @@ const RegisterForm = () => {
       await setDoc(doc(db, `artifacts/${appId}/users/${user.uid}`), {
         fullName: fullName,
         email: email,
-        role: 'user', // Default role
+        role: 'user',
         createdAt: new Date().toISOString(),
       });
 
@@ -150,8 +157,11 @@ const RegisterForm = () => {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
                 placeholder="Password (min 8 chars, uppercase, lowercase, number, special char)"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
               />
+              {passwordError && (
+                <p className="text-red-500 text-xs mt-1">{passwordError}</p>
+              )}
             </div>
             <div>
               <label htmlFor="confirm-password" className="sr-only">
@@ -168,6 +178,9 @@ const RegisterForm = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              {password !== confirmPassword && confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">Konfirmasi kata sandi tidak cocok.</p>
+              )}
             </div>
           </div>
 
@@ -175,7 +188,7 @@ const RegisterForm = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-300"
-              disabled={isLoading || !isAuthReady}
+              disabled={isLoading || !isAuthReady || passwordError || (password !== confirmPassword && confirmPassword !== '')}
             >
               {isLoading ? 'Registering...' : 'Register'}
             </button>
