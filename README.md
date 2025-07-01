@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+SEA Catering App
+Selamat datang di repositori aplikasi SEA Catering! Aplikasi ini dibangun sebagai bagian dari tantangan teknis untuk menyediakan platform pemesanan makanan sehat yang dapat disesuaikan untuk pelanggan di seluruh Indonesia.
 
-## Getting Started
+Aplikasi ini mencakup fungsionalitas dari Level 1 hingga Level 5, termasuk halaman statis, navigasi interaktif, sistem berlangganan dengan integrasi database, autentikasi pengguna, dan dashboard untuk pengguna dan admin.
 
-First, run the development server:
+Fitur Utama
+Homepage: Halaman beranda yang menarik dengan informasi bisnis, slogan, fitur utama, dan detail kontak.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Menu / Meal Plans: Tampilan interaktif rencana makanan dengan detail modal.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Testimonials: Bagian testimonial yang menampilkan ulasan pelanggan dan formulir untuk mengirimkan testimonial baru (disimpan di Firestore).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Subscription System: Formulir berlangganan yang komprehensif dengan perhitungan harga otomatis dan penyimpanan data ke Firestore.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+User Authentication & Authorization:
 
-## Learn More
+Registrasi, login, dan logout pengguna.
 
-To learn more about Next.js, take a look at the following resources:
+Validasi kata sandi yang kuat.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Hanya pengguna terautentikasi yang dapat mengakses fitur berlangganan dan dashboard pengguna.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+User Dashboard: Pengguna dapat melihat langganan aktif mereka, serta menjeda, membatalkan, atau mengaktifkan kembali langganan.
 
-## Deploy on Vercel
+Admin Dashboard: Dashboard untuk admin untuk melihat metrik bisnis utama seperti langganan baru, MRR, reaktivasi, dan pertumbuhan langganan, dengan filter tanggal.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Teknologi yang Digunakan
+Frontend Framework: Next.js (dengan React)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Styling: Tailwind CSS
+
+Database & Authentication: Google Firebase (Firestore, Authentication)
+
+Persyaratan Sistem
+Pastikan Anda memiliki Node.js (versi 18.17 atau lebih tinggi) dan npm (atau Yarn/pnpm) terinstal di sistem Anda.
+
+Pengaturan Proyek
+Ikuti langkah-langkah di bawah ini untuk mengatur dan menjalankan proyek secara lokal:
+
+1. Kloning Repositori
+git clone https://github.com/YOUR_USERNAME/sea-catering-app.git
+cd sea-catering-app
+
+Ganti YOUR_USERNAME dengan username GitHub Anda.
+
+2. Instal Dependensi
+npm install
+# atau
+yarn install
+# atau
+pnpm install
