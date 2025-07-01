@@ -1,51 +1,91 @@
-SEA Catering App
-Selamat datang di repositori aplikasi SEA Catering! Aplikasi ini dibangun sebagai bagian dari tantangan teknis untuk menyediakan platform pemesanan makanan sehat yang dapat disesuaikan untuk pelanggan di seluruh Indonesia.
+# SEA Catering: Makanan Sehat, Kapan Saja, Di Mana Saja
 
-Aplikasi ini mencakup fungsionalitas dari Level 1 hingga Level 5, termasuk halaman statis, navigasi interaktif, sistem berlangganan dengan integrasi database, autentikasi pengguna, dan dashboard untuk pengguna dan admin.
+![SEA Catering Logo/Banner (Opsional, tambahkan gambar di sini)](https://via.placeholder.com/1200x400?text=SEA+Catering+App)
 
-Fitur Utama
-Homepage: Halaman beranda yang menarik dengan informasi bisnis, slogan, fitur utama, dan detail kontak.
+## Gambaran Umum Proyek
 
-Menu / Meal Plans: Tampilan interaktif rencana makanan dengan detail modal.
+SEA Catering adalah aplikasi web modern yang dibangun dengan Next.js dan Firebase, dirancang untuk memberikan pengalaman yang mulus bagi pengguna untuk berlangganan paket makanan sehat dan mengirimkannya langsung ke pintu mereka. Misi kami adalah membuat makan sehat dapat diakses dan nyaman bagi semua orang, menawarkan pilihan makanan yang dapat disesuaikan dan informasi nutrisi yang terperinci.
 
-Testimonials: Bagian testimonial yang menampilkan ulasan pelanggan dan formulir untuk mengirimkan testimonial baru (disimpan di Firestore).
+## Fitur Utama
 
-Subscription System: Formulir berlangganan yang komprehensif dengan perhitungan harga otomatis dan penyimpanan data ke Firestore.
+### Fitur untuk Pengguna:
 
-User Authentication & Authorization:
+* **Halaman Utama**: Halaman utama yang menarik yang menampilkan misi kami, menyoroti manfaat utama seperti kustomisasi makanan dan pengiriman nasional, serta menampilkan testimonial pelanggan. Pengguna juga dapat mengirimkan ulasan dan peringkat mereka sendiri.
+* **Paket Makanan**: Jelajahi berbagai paket makanan sehat, termasuk Diet Plan, Protein Plan, dan Royal Plan, masing-masing dengan deskripsi terperinci dan harga.
+* **Manajemen Langganan**: Berlangganan paket makanan dengan mudah, pilih jenis makanan yang disukai (Sarapan, Makan Siang, Makan Malam), pilih hari pengiriman, dan tentukan alergi atau batasan diet apa pun.
+* **Dasbor Pengguna**: Dasbor yang dipersonalisasi bagi pengguna untuk melihat dan mengelola langganan aktif mereka, dengan opsi untuk menjeda, membatalkan, atau mengaktifkan kembali paket.
+* **Autentikasi Aman**: Fungsionalitas pendaftaran dan login pengguna yang aman untuk mengelola akun pribadi dan langganan.
+* **Hubungi Kami**: Halaman khusus dengan informasi kontak untuk pertanyaan dan dukungan.
 
-Registrasi, login, dan logout pengguna.
+### Fitur untuk Admin:
 
-Validasi kata sandi yang kuat.
+* **Dasbor Admin**: Gambaran umum yang komprehensif bagi administrator untuk memantau semua langganan, melacak langganan baru, pendapatan berulang bulanan (MRR), reaktivasi, dan pertumbuhan langganan secara keseluruhan. Termasuk fitur filter data berdasarkan tanggal.
 
-Hanya pengguna terautentikasi yang dapat mengakses fitur berlangganan dan dashboard pengguna.
+## Tumpukan Teknologi
 
-User Dashboard: Pengguna dapat melihat langganan aktif mereka, serta menjeda, membatalkan, atau mengaktifkan kembali langganan.
+* **Frontend**:
+    * [Next.js](https://nextjs.org/) (Kerangka Kerja React)
+    * [React](https://react.dev/)
+    * [Tailwind CSS](https://tailwindcss.com/) (untuk styling)
+* **Backend/Database**:
+    * [Firebase](https://firebase.google.com/) (Autentikasi, Firestore Database)
 
-Admin Dashboard: Dashboard untuk admin untuk melihat metrik bisnis utama seperti langganan baru, MRR, reaktivasi, dan pertumbuhan langganan, dengan filter tanggal.
+## Memulai
 
-Teknologi yang Digunakan
-Frontend Framework: Next.js (dengan React)
+Ikuti instruksi ini untuk menyiapkan dan menjalankan proyek secara lokal di mesin Anda.
 
-Styling: Tailwind CSS
+### Prasyarat
 
-Database & Authentication: Google Firebase (Firestore, Authentication)
+Pastikan Anda telah menginstal Node.js (direkomendasikan versi 18.18.0 atau lebih tinggi) dan npm/yarn/pnpm/bun.
 
-Persyaratan Sistem
-Pastikan Anda memiliki Node.js (versi 18.17 atau lebih tinggi) dan npm (atau Yarn/pnpm) terinstal di sistem Anda.
+### Instalasi
 
-Pengaturan Proyek
-Ikuti langkah-langkah di bawah ini untuk mengatur dan menjalankan proyek secara lokal:
+1.  **Kloning repositori:**
+    ```bash
+    git clone [ganti_dengan_url_repo_anda]
+    cd sea-catering-app
+    ```
+2.  **Instal dependensi:**
+    ```bash
+    npm install
+    # atau
+    yarn install
+    # atau
+    pnpm install
+    # atau
+    bun install
+    ```
 
-1. Kloning Repositori
-git clone https://github.com/YOUR_USERNAME/sea-catering-app.git
-cd sea-catering-app
+### Variabel Lingkungan
 
-Ganti YOUR_USERNAME dengan username GitHub Anda.
+Proyek ini menggunakan Firebase untuk layanan backend-nya. Anda perlu mengkonfigurasi kredensial proyek Firebase Anda.
 
-2. Instal Dependensi
-npm install
+1.  Buat file `.env.local` di root proyek Anda:
+    ```
+    .env.local
+    ```
+2.  Tambahkan detail konfigurasi Firebase Anda ke file ini. Anda dapat menemukannya di [Konsol Firebase](https://console.firebase.google.com/) di bawah **Project settings** > **Your apps** > cuplikan "Config" aplikasi web.
+
+    ```dotenv
+    NEXT_PUBLIC_FIREBASE_API_KEY="KUNCI_API_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="DOMAIN_AUTENTIKASI_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID="ID_PROYEK_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="BUCKET_PENYIMPANAN_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="ID_PENGIRIM_PESAN_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_APP_ID="ID_APLIKASI_FIREBASE_ANDA"
+    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID="ID_PENGUKURAN_FIREBASE_ANDA"
+    ```
+    **Penting**: Ganti nilai placeholder (`KUNCI_API_FIREBASE_ANDA`, dll.) dengan kredensial proyek Firebase Anda yang sebenarnya.
+
+### Menjalankan Server Pengembangan
+
+Untuk menjalankan aplikasi dalam mode pengembangan:
+
+```bash
+npm run dev
 # atau
-yarn install
+yarn dev
 # atau
-pnpm install
+pnpm dev
+# atau
+bun dev
