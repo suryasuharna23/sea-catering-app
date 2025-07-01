@@ -28,61 +28,6 @@ SEA Catering adalah aplikasi web modern yang dibangun dengan Next.js dan Firebas
     * [Firebase](https://firebase.google.com/) (Autentikasi, Firestore Database)
 
 ## Memulai
+Tentu, untuk mengakses aplikasi SEA Catering secara langsung tanpa perlu melakukan kloning atau instalasi lokal, Anda bisa mengklik tautan deployment Vercel berikut:
 
-Ikuti instruksi ini untuk menyiapkan dan menjalankan proyek secara lokal di mesin Anda.
-
-### Prasyarat
-
-Pastikan Anda telah menginstal Node.js (direkomendasikan versi 18.18.0 atau lebih tinggi) dan npm/yarn/pnpm/bun.
-
-### Instalasi
-
-1.  **Kloning repositori:**
-    ```bash
-    git clone [ganti_dengan_url_repo_anda]
-    cd sea-catering-app
-    ```
-2.  **Instal dependensi:**
-    ```bash
-    npm install
-    # atau
-    yarn install
-    # atau
-    pnpm install
-    # atau
-    bun install
-    ```
-
-### Variabel Lingkungan
-
-Proyek ini menggunakan Firebase untuk layanan backend-nya. Anda perlu mengkonfigurasi kredensial proyek Firebase Anda.
-
-1.  Buat file `.env.local` di root proyek Anda:
-    ```
-    .env.local
-    ```
-2.  Tambahkan detail konfigurasi Firebase Anda ke file ini. Anda dapat menemukannya di [Konsol Firebase](https://console.firebase.google.com/) di bawah **Project settings** > **Your apps** > cuplikan "Config" aplikasi web.
-
-    ```dotenv
-    NEXT_PUBLIC_FIREBASE_API_KEY="KUNCI_API_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="DOMAIN_AUTENTIKASI_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_PROJECT_ID="ID_PROYEK_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="BUCKET_PENYIMPANAN_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="ID_PENGIRIM_PESAN_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_APP_ID="ID_APLIKASI_FIREBASE_ANDA"
-    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID="ID_PENGUKURAN_FIREBASE_ANDA"
-    ```
-    **Penting**: Ganti nilai placeholder (`KUNCI_API_FIREBASE_ANDA`, dll.) dengan kredensial proyek Firebase Anda yang sebenarnya.
-
-### Menjalankan Server Pengembangan
-
-Untuk menjalankan aplikasi dalam mode pengembangan:
-
-```bash
-npm run dev
-# atau
-yarn dev
-# atau
-pnpm dev
-# atau
-bun dev
+https://sea-catering-app-rust.vercel.app/
