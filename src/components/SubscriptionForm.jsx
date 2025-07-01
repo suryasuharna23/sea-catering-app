@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useFirebase } from '../context/FirebaseContext';
 import { collection, addDoc } from 'firebase/firestore';
 import ModalMessage from './ModalMessage';
+import { useRouter } from 'next/navigation';
 
 const planOptions = [
   { name: 'Diet Plan', price: 30000 },
@@ -20,7 +21,8 @@ const deliveryDaysOptions = [
 ];
 
 const SubscriptionForm = () => {
-  const { db, userId, isAuthReady } = useFirebase();
+  const { db, auth, userId, isAuthReady } = useFirebase();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     fullName: '',
     phoneNumber: '',
@@ -31,6 +33,13 @@ const SubscriptionForm = () => {
   });
   const [totalPrice, setTotalPrice] = useState(0);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (isAuthReady && auth && auth.currentUser && auth.currentUser.isAnonymous) {
+      setMessage('Anda harus login untuk berlangganan. Silakan login atau daftar.');
+      router.push('/login');
+    }
+  }, [isAuthReady, auth, router]);
 
   useEffect(() => {
     const calculatePrice = () => {
@@ -63,8 +72,9 @@ const SubscriptionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isAuthReady || !db || !userId) {
-      setMessage('Sistem autentikasi belum siap. Silakan coba lagi.');
+    if (!isAuthReady || !db || !userId || auth.currentUser.isAnonymous) {
+      setMessage('Anda harus login untuk berlangganan.');
+      router.push('/login');
       return;
     }
 
@@ -82,6 +92,7 @@ const SubscriptionForm = () => {
         totalPrice: totalPrice,
         userId: userId,
         subscriptionDate: new Date().toISOString(),
+        status: 'active', // Default status for new subscriptions
       });
       setMessage('Langganan Anda berhasil disimpan!');
       setFormData({
@@ -235,7 +246,7 @@ const SubscriptionForm = () => {
             <button
               type="submit"
               className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-300"
-              disabled={!isAuthReady || formData.mealTypes.length === 0 || formData.deliveryDays.length === 0}
+              disabled={!isAuthReady || formData.mealTypes.length === 0 || formData.deliveryDays.length === 0 || (auth && auth.currentUser && auth.currentUser.isAnonymous)}
             >
               Subscribe Now
             </button>

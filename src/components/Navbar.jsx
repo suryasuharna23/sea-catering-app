@@ -1,24 +1,49 @@
-"use client"; 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+"use client";
 
-/**
- * Komponen Navbar yang responsif untuk navigasi aplikasi SEA Catering.
- * Menampilkan tautan ke berbagai halaman dan menyoroti halaman yang aktif.
- *
- * @returns {JSX.Element} Elemen JSX untuk bilah navigasi.
- */
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useFirebase } from '../context/FirebaseContext';
+import { signOut } from 'firebase/auth';
+import ModalMessage from './ModalMessage';
+
 const Navbar = () => {
-  const pathname = usePathname(); 
-  const [isOpen, setIsOpen] = useState(false); 
+  const pathname = usePathname();
+  const router = useRouter();
+  const { auth, userId, isAuthReady } = useFirebase();
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [displayName, setDisplayName] = useState('Guest');
+
+  useEffect(() => {
+    if (auth && auth.currentUser) {
+      setDisplayName(auth.currentUser.displayName || auth.currentUser.email || 'User');
+    } else if (userId && isAuthReady) {
+      setDisplayName('Guest');
+    }
+  }, [auth, userId, isAuthReady]);
 
   const isActive = (path) => pathname === path;
+
+  const handleLogout = async () => {
+    if (!auth) {
+      setMessage('Sistem autentikasi belum siap.');
+      return;
+    }
+    try {
+      await signOut(auth);
+      setMessage('Logout berhasil!');
+      setDisplayName('Guest');
+      router.push('/login');
+    } catch (error) {
+      console.error("Logout error:", error);
+      setMessage('Terjadi kesalahan saat logout. Silakan coba lagi.');
+    }
+  };
 
   return (
     <nav className="bg-green-800 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo/Nama Bisnis */}
         <Link href="/" className="text-white text-2xl font-bold rounded-md p-2 hover:bg-green-700 transition-colors">
           SEA Catering
         </Link>
@@ -55,7 +80,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        <div className="hidden md:flex space-x-6">
+        <div className="hidden md:flex items-center space-x-6">
           <Link href="/" className={`text-white text-lg font-medium p-2 rounded-md transition-colors ${isActive('/') ? 'bg-green-700' : 'hover:bg-green-700'}`}>
             Home
           </Link>
@@ -68,6 +93,22 @@ const Navbar = () => {
           <Link href="/contact" className={`text-white text-lg font-medium p-2 rounded-md transition-colors ${isActive('/contact') ? 'bg-green-700' : 'hover:bg-green-700'}`}>
             Contact Us
           </Link>
+
+          {auth && auth.currentUser && !auth.currentUser.isAnonymous ? (
+            <>
+              <span className="text-white text-lg font-medium">Hello, {displayName}!</span>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className={`text-white text-lg font-medium p-2 rounded-md transition-colors ${isActive('/login') ? 'bg-green-700' : 'hover:bg-green-700'}`}>
+              Login
+            </Link>
+          )}
         </div>
       </div>
 
@@ -85,8 +126,24 @@ const Navbar = () => {
           <Link href="/contact" onClick={() => setIsOpen(false)} className={`block text-white text-lg px-4 py-2 rounded-md transition-colors ${isActive('/contact') ? 'bg-green-600' : 'hover:bg-green-600'}`}>
             Contact Us
           </Link>
+          {auth && auth.currentUser && !auth.currentUser.isAnonymous ? (
+            <>
+              <span className="block text-white text-lg px-4 py-2">Hello, {displayName}!</span>
+              <button
+                onClick={() => { setIsOpen(false); handleLogout(); }}
+                className="block w-full text-left bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-2"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" onClick={() => setIsOpen(false)} className={`block text-white text-lg px-4 py-2 rounded-md transition-colors ${isActive('/login') ? 'bg-green-600' : 'hover:bg-green-600'}`}>
+              Login
+            </Link>
+          )}
         </div>
       )}
+      <ModalMessage message={message} onClose={() => setMessage('')} />
     </nav>
   );
 };
