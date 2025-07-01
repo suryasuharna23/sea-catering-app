@@ -10,16 +10,16 @@ import ModalMessage from './ModalMessage';
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { auth, userId, isAuthReady } = useFirebase();
+  const { auth, userId, userRole, isAuthReady } = useFirebase();
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [displayName, setDisplayName] = useState('Guest');
+  const [displayName, setDisplayName] = useState('Tamu');
 
   useEffect(() => {
     if (auth && auth.currentUser) {
-      setDisplayName(auth.currentUser.displayName || auth.currentUser.email || 'User');
+      setDisplayName(auth.currentUser.displayName || auth.currentUser.email || 'Pengguna');
     } else if (userId && isAuthReady) {
-      setDisplayName('Guest');
+      setDisplayName('Tamu');
     }
   }, [auth, userId, isAuthReady]);
 
@@ -33,7 +33,7 @@ const Navbar = () => {
     try {
       await signOut(auth);
       setMessage('Logout berhasil!');
-      setDisplayName('Guest');
+      setDisplayName('Tamu');
       router.push('/login');
     } catch (error) {
       console.error("Logout error:", error);
@@ -96,7 +96,15 @@ const Navbar = () => {
 
           {auth && auth.currentUser && !auth.currentUser.isAnonymous ? (
             <>
-              <span className="text-white text-lg font-medium">Hello, {displayName}!</span>
+              <Link href="/dashboard/user" className={`text-white text-lg font-medium p-2 rounded-md transition-colors ${isActive('/dashboard/user') ? 'bg-green-700' : 'hover:bg-green-700'}`}>
+                Dashboard
+              </Link>
+              {userRole === 'admin' && (
+                <Link href="/dashboard/admin" className={`text-white text-lg font-medium p-2 rounded-md transition-colors ${isActive('/dashboard/admin') ? 'bg-green-700' : 'hover:bg-green-700'}`}>
+                  Admin
+                </Link>
+              )}
+              <span className="text-white text-lg font-medium">Halo, {displayName}!</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -128,7 +136,15 @@ const Navbar = () => {
           </Link>
           {auth && auth.currentUser && !auth.currentUser.isAnonymous ? (
             <>
-              <span className="block text-white text-lg px-4 py-2">Hello, {displayName}!</span>
+              <Link href="/dashboard/user" onClick={() => setIsOpen(false)} className={`block text-white text-lg px-4 py-2 rounded-md transition-colors ${isActive('/dashboard/user') ? 'bg-green-600' : 'hover:bg-green-600'}`}>
+                Dashboard
+              </Link>
+              {userRole === 'admin' && (
+                <Link href="/dashboard/admin" onClick={() => setIsOpen(false)} className={`block text-white text-lg px-4 py-2 rounded-md transition-colors ${isActive('/dashboard/admin') ? 'bg-green-600' : 'hover:bg-green-600'}`}>
+                  Admin
+                </Link>
+              )}
+              <span className="block text-white text-lg px-4 py-2">Halo, {displayName}!</span>
               <button
                 onClick={() => { setIsOpen(false); handleLogout(); }}
                 className="block w-full text-left bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-2"

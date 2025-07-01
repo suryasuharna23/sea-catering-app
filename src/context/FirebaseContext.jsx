@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const FirebaseContext = createContext();
 
@@ -16,6 +16,7 @@ export const FirebaseProvider = ({ children }) => {
   const [db, setDb] = useState(null);
   const [auth, setAuth] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
@@ -35,9 +36,18 @@ export const FirebaseProvider = ({ children }) => {
       const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
         if (user) {
           setUserId(user.uid);
+          const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+          const userDocRef = doc(firestoreDb, `artifacts/${appId}/users/${user.uid}`);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setUserRole(userDocSnap.data().role || 'user');
+          } else {
+            setUserRole('user');
+          }
         } else {
           const anonymousUser = await signInAnonymously(firebaseAuth);
           setUserId(anonymousUser.user.uid);
+          setUserRole('guest');
         }
         setIsAuthReady(true);
       });
@@ -52,24 +62,38 @@ export const FirebaseProvider = ({ children }) => {
   useEffect(() => {
     if (auth && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
       signInWithCustomToken(auth, __initial_auth_token)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
           setUserId(userCredential.user.uid);
+          const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+          const userDocRef = doc(db, `artifacts/${appId}/users/${userCredential.user.uid}`);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            setUserRole(userDocSnap.data().role || 'user');
+          } else {
+            setUserRole('user');
+          }
         })
         .catch((error) => {
           console.error("Custom token sign-in failed:", error);
           signInAnonymously(auth)
-            .then((userCredential) => setUserId(userCredential.user.uid))
+            .then((userCredential) => {
+              setUserId(userCredential.user.uid);
+              setUserRole('guest');
+            })
             .catch((anonError) => console.error("Anonymous sign-in failed:", anonError));
         });
     } else if (auth && !userId && !isAuthReady) {
       signInAnonymously(auth)
-        .then((userCredential) => setUserId(userCredential.user.uid))
+        .then((userCredential) => {
+          setUserId(userCredential.user.uid);
+          setUserRole('guest');
+        })
         .catch((error) => console.error("Anonymous sign-in failed:", error));
     }
-  }, [auth, userId, isAuthReady]);
+  }, [auth, userId, isAuthReady, db]);
 
   return (
-    <FirebaseContext.Provider value={{ app, db, auth, userId, isAuthReady }}>
+    <FirebaseContext.Provider value={{ app, db, auth, userId, userRole, isAuthReady }}>
       {children}
     </FirebaseContext.Provider>
   );

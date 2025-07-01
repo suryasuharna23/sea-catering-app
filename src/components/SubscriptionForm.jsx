@@ -85,15 +85,23 @@ const SubscriptionForm = () => {
 
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-      const subscriptionsCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/subscriptions`);
+      const userSubscriptionsCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/subscriptions`);
+      const adminSubscriptionsCollectionRef = collection(db, `artifacts/${appId}/public/data/all_subscriptions_for_admin`);
 
-      await addDoc(subscriptionsCollectionRef, {
+      const subscriptionData = {
         ...formData,
         totalPrice: totalPrice,
         userId: userId,
         subscriptionDate: new Date().toISOString(),
-        status: 'active', // Default status for new subscriptions
-      });
+        originalSubscriptionDate: new Date().toISOString(),
+        status: 'active',
+        lastStatusChangeDate: new Date().toISOString(),
+        previousStatus: null,
+      };
+
+      await addDoc(userSubscriptionsCollectionRef, subscriptionData);
+      await addDoc(adminSubscriptionsCollectionRef, subscriptionData);
+
       setMessage('Langganan Anda berhasil disimpan!');
       setFormData({
         fullName: '',
